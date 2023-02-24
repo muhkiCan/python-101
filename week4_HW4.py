@@ -3,7 +3,7 @@ from tkinter import ttk #theme of tk
 from tkinter import messagebox
 
 from tkcalendar import DateEntry
-
+import csv
 
 
 GUI = Tk()
@@ -36,12 +36,12 @@ def chekNum(h,w) :
        try : 
         float(h) and float(w)
        except : 
-        show_messagebox('Error', 'plase input number')
+        ShowMessagebox('Error', 'plase input number')
 
        if float(h) < 0 or float(w) < 0 :
-        show_messagebox('Error', 'plase input more than 0')
+        ShowMessagebox('Error', 'plase input more than 0')
        elif float(h) > 999 or float(w) > 999:
-        show_messagebox('Error', 'limit 999')
+        ShowMessagebox('Error', 'limit 999')
        else :
         return float(h),float(w)
        
@@ -61,10 +61,14 @@ def CalBmi() :
     else : 
             message = 'BMI : {} \nอยู่ในเกณฑ์ น้ำหนักน้อยกว่ามาตรฐาน'.format(str(BMI))
     
-    show_messagebox('Result',message)
+    ShowMessagebox('Result',message)
 
-def show_messagebox(titlems,message) : 
+def ShowMessagebox(titlems,message) : 
     messagebox.showinfo(titlems,message)
+
+def showData() : 
+     data = 'name : '
+     ShowMessagebox('show data', data)
 
 button_cal =  Button(GUI,text='Calculate', command=CalBmi, font=('Angsana New',16)).grid(
     row=6,column=0,sticky='ew',pady=4)
