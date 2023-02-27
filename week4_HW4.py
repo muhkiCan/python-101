@@ -3,34 +3,36 @@ from tkinter import ttk #theme of tk
 from tkinter import messagebox
 
 from tkcalendar import DateEntry
+from datetime import datetime
 import csv
 
+########################### FUNCTION #######################################
 
-GUI = Tk()
-GUI.title('คำนวน BMI')
-GUI.geometry('720x480')
+def WiteCsv(detaillist) :
+     with open('data.csv','a',encoding='utf-8',newline='') as file:
+          fw = csv.writer(file)
+          fw.writerow(detaillist)
 
-text_header = Label(GUI, text='คำนวน BMI',font=('Angsana New',30),fg='green')
-text_header.grid(row=0, column=0)
+def ReadCsv():
+     with open('data.csv',encoding='utf-8',newline='') as file:
+          fr = csv.reader(file)
+          data = list(fr)
 
-Label(GUI,text='firstname : ',font=('Angsana New',18)).grid(row=1, column=0)
-Label(GUI,text='lastname : ',font=('Angsana New',18)).grid(row=1, column=2)
-Label(GUI,text='brittany : ',font=('Angsana New',18)).grid(row=2, column=0)
-Label(GUI,text='height (cm) : ',font=('Angsana New',18)).grid(row=3, column=0)
-Label(GUI,text='weight (Kg) :',font=('Angsana New',18)).grid(row=4, column=0)
+     return data
 
+def SaveData() : 
+     timespan = datetime.now().strptime('%Y%m%d %H%M%S')
+     
 
-entry_firstname = Entry(GUI,font=('Angsana New',18))
-entry_lastname = Entry(GUI,font=('Angsana New',18))
-entry_bdate = DateEntry(GUI,selectmode='day')
-entry_height = Entry(GUI,font=('Angsana New',18))
-entry_weight = Entry(GUI,font=('Angsana New',18))
+def ShowMessagebox(titlems,message) : 
+    messagebox.showinfo(titlems,message)
 
-entry_firstname.grid(row=1, column=1)
-entry_lastname.grid(row=1, column=3)
-entry_bdate.grid(row=2, column=1,padx=15)
-entry_height.grid(row=3, column=1)
-entry_weight.grid(row=4, column=1)
+def showData() : 
+     data = 'name : {} {}\nbirthday : {}\nheight : {}\nweight :{}'.format(entry_firstname.get(),entry_lastname.get(),entry_bdate.get_date(),entry_height.get(),entry_weight.get())
+     ShowMessagebox('show data', data)
+
+def GetData() : 
+        
 
 def chekNum(h,w) : 
        try : 
@@ -63,14 +65,37 @@ def CalBmi() :
     
     ShowMessagebox('Result',message)
 
-def ShowMessagebox(titlems,message) : 
-    messagebox.showinfo(titlems,message)
+#######################################################################################################################################################
 
-def showData() : 
-     data = 'name : '
-     ShowMessagebox('show data', data)
+GUI = Tk()
+GUI.title('คำนวน BMI')
+GUI.geometry('720x480')
 
-button_cal =  Button(GUI,text='Calculate', command=CalBmi, font=('Angsana New',16)).grid(
+text_header = Label(GUI, text='คำนวน BMI',font=('Angsana New',30),fg='green')
+text_header.grid(row=0, column=0)
+
+Label(GUI,text='firstname : ',font=('Angsana New',18)).grid(row=1, column=0)
+Label(GUI,text='lastname : ',font=('Angsana New',18)).grid(row=1, column=2)
+Label(GUI,text='brittany : ',font=('Angsana New',18)).grid(row=2, column=0)
+Label(GUI,text='height (cm) : ',font=('Angsana New',18)).grid(row=3, column=0)
+Label(GUI,text='weight (Kg) :',font=('Angsana New',18)).grid(row=4, column=0)
+
+
+entry_firstname = Entry(GUI,font=('Angsana New',18))
+entry_lastname = Entry(GUI,font=('Angsana New',18))
+entry_bdate = DateEntry(GUI,selectmode='day')
+entry_height = Entry(GUI,font=('Angsana New',18))
+entry_weight = Entry(GUI,font=('Angsana New',18))
+
+entry_firstname.grid(row=1, column=1)
+entry_lastname.grid(row=1, column=3)
+entry_bdate.grid(row=2, column=1,padx=15)
+entry_height.grid(row=3, column=1)
+entry_weight.grid(row=4, column=1)
+
+
+
+button_cal =  Button(GUI,text='Calculate', command=showData, font=('Angsana New',16)).grid(
     row=6,column=0,sticky='ew',pady=4)
 
 button_exit = Button(GUI,text='Exit', command=GUI.quit, font=('Angsana New',16)).grid(
