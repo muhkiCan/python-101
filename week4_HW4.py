@@ -31,8 +31,8 @@ def showData() :
      data = 'name : {} {}\nbirthday : {}\nheight : {}\nweight :{}'.format(entry_firstname.get(),entry_lastname.get(),entry_bdate.get_date(),entry_height.get(),entry_weight.get())
      ShowMessagebox('show data', data)
 
-def GetData() : 
-        
+#def GetData() : 
+
 
 def chekNum(h,w) : 
        try : 
