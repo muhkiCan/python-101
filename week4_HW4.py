@@ -4,6 +4,7 @@ from tkinter import messagebox
 
 from tkcalendar import DateEntry
 from datetime import datetime
+from datetime import date
 import csv
 
 ########################### FUNCTION #######################################
@@ -28,11 +29,26 @@ def ShowMessagebox(titlems,message) :
     messagebox.showinfo(titlems,message)
 
 def showData() : 
-     data = 'name : {} {}\nbirthday : {}\nheight : {}\nweight :{}'.format(entry_firstname.get(),entry_lastname.get(),entry_bdate.get_date(),entry_height.get(),entry_weight.get())
-     ShowMessagebox('show data', data)
+     #data = 'name : {} {}\nbirthday : {}\nheight : {}\nweight :{}'.format(entry_firstname.get(),entry_lastname.get(),entry_bdate.get_date(),entry_height.get(),entry_weight.get())
+     data = StringVar() 
+     ShowMessagebox('show data', data.get())
 
-#def GetData() : 
-
+def SaveDataToList() :
+        data = []
+        data.append(entry_firstname.get())
+        data.append(entry_lastname.get())
+        data.append(entry_bdate.get_date())
+        data.append(CalAge(entry_bdate.get_date()))
+        data.append(entry_height.get())
+        data.append(entry_weight())
+        data.append(CalBmi)
+        
+def CalAge(bdate) : 
+        today = date.today()
+        age = today.year - bdate.year - ((today.month, today.day) < (bdate.month, bdate.day))
+        print(bdate)
+        print(age)
+        return age
 
 def chekNum(h,w) : 
        try : 
@@ -95,7 +111,7 @@ entry_weight.grid(row=4, column=1)
 
 
 
-button_cal =  Button(GUI,text='Calculate', command=showData, font=('Angsana New',16)).grid(
+button_cal =  Button(GUI,text='Calculate', command=CalAge(entry_bdate.get_date()), font=('Angsana New',16)).grid(
     row=6,column=0,sticky='ew',pady=4)
 
 button_exit = Button(GUI,text='Exit', command=GUI.quit, font=('Angsana New',16)).grid(
