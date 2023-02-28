@@ -7,6 +7,8 @@ from datetime import datetime
 from datetime import date
 import csv
 
+today = date.today()
+
 ########################### FUNCTION #######################################
 
 def WiteCsv(detaillist) :
@@ -34,23 +36,33 @@ def showData() :
      ShowMessagebox('show data', data.get())
 
 def SaveDataToList() :
+        CheckData()
+
         data = []
-        data.append(entry_firstname.get())
-        data.append(entry_lastname.get())
+        data.append(entry_firstname.get()+' '+entry_lastname.get())
         data.append(entry_bdate.get_date())
-        data.append(CalAge(entry_bdate.get_date()))
+        data.append(CalAge())
         data.append(entry_height.get())
-        data.append(entry_weight())
-        data.append(CalBmi)
-        
-def CalAge(bdate) : 
-        today = date.today()
-        age = today.year - bdate.year - ((today.month, today.day) < (bdate.month, bdate.day))
-        print(bdate)
-        print(age)
+        data.append(entry_weight.get())
+        data.append(CalBmi())
+        ShowMessagebox('data',data)
+
+def CalAge() : 
+        bdate = entry_bdate.get_date()
+        age = today.year - bdate.year -  ((today.month, today.day) < (bdate.month, bdate.day))
         return age
 
-def chekNum(h,w) : 
+def CheckData() : 
+    CheckNullEntry()
+    ChekNum(entry_height.get(),entry_weight.get())
+
+def CheckNullEntry() : 
+    if entry_firstname.index("end") == 0 : ShowMessagebox('Error', 'plase input firstname')
+    if entry_lastname.index("end") == 0 : ShowMessagebox('Error', 'plase input lastname')
+    if entry_height.index("end") == 0 : ShowMessagebox('Error', 'plase input height')
+    if entry_weight.index("end") == 0 : ShowMessagebox('Error', 'plase input weight')
+
+def ChekNum(h,w) : 
        try : 
         float(h) and float(w)
        except : 
@@ -60,27 +72,28 @@ def chekNum(h,w) :
         ShowMessagebox('Error', 'plase input more than 0')
        elif float(h) > 999 or float(w) > 999:
         ShowMessagebox('Error', 'limit 999')
-       else :
-        return float(h),float(w)
+
        
 def CalBmi() : 
-    height, weight = chekNum(entry_height.get(),entry_weight.get())
+    height, weight = float(entry_height.get()),float(entry_weight.get())
+    bmi = round(weight/pow((height/100),2),2)
 
-    BMI = round(weight/pow((height/100),2),2)
+    return bmi
 
-    if BMI > 30 : 
+'''
+    if bmi > 30 : 
             message = 'BMI : {} \nอยู่ในเกณฑ์ อ้วนมาก'.format(str(BMI))
-    elif BMI > 25 : 
-            message = 'BMI : {} \nอยู่ในเกณฑ์ อ้วน'.format(str(BMI))
-    elif BMI > 23 : 
-            message = 'BMI : {} \nอยู่ในเกณฑ์ ท้วม'.format(str(BMI))
-    elif BMI > 18.50 : 
-            message = 'BMI : {} \nอยู่ในเกณฑ์ น้ำหนักปกติ'.format(str(BMI))
+    elif bmi > 25 : 
+            message = 'BMI : {} \nอยู่ในเกณฑ์ อ้วน'.format(str(bmi))
+    elif bmi > 23 : 
+            message = 'BMI : {} \nอยู่ในเกณฑ์ ท้วม'.format(str(bmi))
+    elif bmi > 18.50 : 
+            message = 'BMI : {} \nอยู่ในเกณฑ์ น้ำหนักปกติ'.format(str(bmi))
     else : 
-            message = 'BMI : {} \nอยู่ในเกณฑ์ น้ำหนักน้อยกว่ามาตรฐาน'.format(str(BMI))
+            message = 'BMI : {} \nอยู่ในเกณฑ์ น้ำหนักน้อยกว่ามาตรฐาน'.format(str(bmi))
     
     ShowMessagebox('Result',message)
-
+'''
 #######################################################################################################################################################
 
 GUI = Tk()
@@ -99,7 +112,7 @@ Label(GUI,text='weight (Kg) :',font=('Angsana New',18)).grid(row=4, column=0)
 
 entry_firstname = Entry(GUI,font=('Angsana New',18))
 entry_lastname = Entry(GUI,font=('Angsana New',18))
-entry_bdate = DateEntry(GUI,selectmode='day')
+entry_bdate = DateEntry(GUI,locale='en_US', date_pattern='yyyy/MM/dd',maxdate=today)
 entry_height = Entry(GUI,font=('Angsana New',18))
 entry_weight = Entry(GUI,font=('Angsana New',18))
 
@@ -111,7 +124,7 @@ entry_weight.grid(row=4, column=1)
 
 
 
-button_cal =  Button(GUI,text='Calculate', command=CalAge(entry_bdate.get_date()), font=('Angsana New',16)).grid(
+button_cal =  Button(GUI,text='Calculate', command=SaveDataToList, font=('Angsana New',16)).grid(
     row=6,column=0,sticky='ew',pady=4)
 
 button_exit = Button(GUI,text='Exit', command=GUI.quit, font=('Angsana New',16)).grid(
