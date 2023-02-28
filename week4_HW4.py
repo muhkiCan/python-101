@@ -8,7 +8,6 @@ from datetime import date
 import csv
 
 today = date.today()
-
 ########################### FUNCTION #######################################
 
 def WiteCsv(detaillist) :
@@ -36,16 +35,19 @@ def showData() :
      ShowMessagebox('show data', data.get())
 
 def SaveDataToList() :
-        CheckData()
+        if (CheckData()) : 
+            data = []
+            data.append(entry_firstname.get()+' '+entry_lastname.get())
+            data.append(entry_bdate.get_date())
+            data.append(CalAge())
+            data.append(entry_height.get())
+            data.append(entry_weight.get())
+            data.append(CalBmi())
+            print('Data in List\n')
+            for x in data : 
+                print(str(x)+'\n')    
+            print('-------------------------------------\n\n')
 
-        data = []
-        data.append(entry_firstname.get()+' '+entry_lastname.get())
-        data.append(entry_bdate.get_date())
-        data.append(CalAge())
-        data.append(entry_height.get())
-        data.append(entry_weight.get())
-        data.append(CalBmi())
-        ShowMessagebox('data',data)
 
 def CalAge() : 
         bdate = entry_bdate.get_date()
@@ -53,26 +55,58 @@ def CalAge() :
         return age
 
 def CheckData() : 
-    CheckNullEntry()
-    ChekNum(entry_height.get(),entry_weight.get())
+    if CheckNullEntry() and ChekNum(entry_height.get(),entry_weight.get()) : 
+        print('CheckData : TRUE')
+        return TRUE
+    
+    print('CheckData : FALSE')
+    return FALSE
 
 def CheckNullEntry() : 
-    if entry_firstname.index("end") == 0 : ShowMessagebox('Error', 'plase input firstname')
-    if entry_lastname.index("end") == 0 : ShowMessagebox('Error', 'plase input lastname')
-    if entry_height.index("end") == 0 : ShowMessagebox('Error', 'plase input height')
-    if entry_weight.index("end") == 0 : ShowMessagebox('Error', 'plase input weight')
+    runnig = TRUE
+    if entry_firstname.index("end") == 0 : 
+        ShowMessagebox('Error', 'plase input firstname')
+        runnig = FALSE
+    if entry_lastname.index("end") == 0 : 
+        ShowMessagebox('Error', 'plase input lastname')
+        runnig = FALSE
+    if entry_height.index("end") == 0 : 
+        ShowMessagebox('Error', 'plase input height')
+        runnig = FALSE
+    if entry_weight.index("end") == 0 : 
+        ShowMessagebox('Error', 'plase input weight')
+        runnig = FALSE
+
+    if runnig :
+        #print('CheckNullEntry : TRUE') 
+        return TRUE
+    
+    #print('CheckNullEntry : FALSE')
+    return FALSE
+
 
 def ChekNum(h,w) : 
        try : 
         float(h) and float(w)
        except : 
         ShowMessagebox('Error', 'plase input number')
+        return FALSE
+
+       runnig = TRUE
 
        if float(h) < 0 or float(w) < 0 :
         ShowMessagebox('Error', 'plase input more than 0')
+        runnig = FALSE
        elif float(h) > 999 or float(w) > 999:
         ShowMessagebox('Error', 'limit 999')
+        runnig = FALSE
 
+       if runnig :
+        #print('ChekNum : TRUE')
+        return TRUE
+       
+       #print('ChekNum : FALSE')
+       return FALSE
        
 def CalBmi() : 
     height, weight = float(entry_height.get()),float(entry_weight.get())
