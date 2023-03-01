@@ -8,9 +8,10 @@ from datetime import date
 import csv
 
 today = date.today()
+fields = ['TIMESTAMP','FIRSTNAME','LASTNAME','BRIDDATY','AGE','HEIGHT','WEIGHT','BMI','CONSIDER']
 ########################### FUNCTION #######################################
 
-def WiteCsv(detaillist) :
+def WriteCsv(detaillist) :
      with open('data.csv','a',encoding='utf-8',newline='') as file:
           fw = csv.writer(file)
           fw.writerow(detaillist)
@@ -22,8 +23,6 @@ def ReadCsv():
 
      return data
 
-def SaveData() : 
-     timespan = datetime.now().strptime('%Y%m%d %H%M%S')
      
 
 def ShowMessagebox(titlems,message) : 
@@ -36,18 +35,23 @@ def showData() :
 
 def SaveDataToList() :
         if (CheckData()) : 
+            bmi, msage = CalBmi()
             data = []
-            data.append(entry_firstname.get()+' '+entry_lastname.get())
+            data.append(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            data.append(entry_firstname.get())
+            data.append(entry_lastname.get())
             data.append(entry_bdate.get_date())
             data.append(CalAge())
             data.append(entry_height.get())
             data.append(entry_weight.get())
-            data.append(CalBmi())
+            data.append(bmi)
+            data.append(msage)
+            
             print('Data in List\n')
             for x in data : 
                 print(str(x)+'\n')    
             print('-------------------------------------\n\n')
-
+            
 
 def CalAge() : 
         bdate = entry_bdate.get_date()
@@ -92,27 +96,29 @@ def ChekNum(h,w) :
         ShowMessagebox('Error', 'plase input number')
         return FALSE
 
-       runnig = TRUE
-
        if float(h) < 0 or float(w) < 0 :
         ShowMessagebox('Error', 'plase input more than 0')
-        runnig = FALSE
+        return FALSE
        elif float(h) > 999 or float(w) > 999:
         ShowMessagebox('Error', 'limit 999')
-        runnig = FALSE
+        return FALSE
 
-       if runnig :
-        #print('ChekNum : TRUE')
-        return TRUE
-       
-       #print('ChekNum : FALSE')
-       return FALSE
+       return TRUE
        
 def CalBmi() : 
     height, weight = float(entry_height.get()),float(entry_weight.get())
     bmi = round(weight/pow((height/100),2),2)
 
-    return bmi
+    if bmi > 30 : 
+        return bmi, 'อ้วนมาก'
+    elif bmi > 25 : 
+        return bmi, 'อ้วน'
+    elif bmi > 23 : 
+        return bmi, 'ท้วม'
+    elif bmi > 18.50 : 
+        return bmi, 'น้ำหนักปกติ'
+    else : 
+        return bmi, 'น้ำหนักน้อยกว่ามาตรฐาน'
 
 '''
     if bmi > 30 : 
@@ -128,6 +134,7 @@ def CalBmi() :
     
     ShowMessagebox('Result',message)
 '''
+
 #######################################################################################################################################################
 
 GUI = Tk()
